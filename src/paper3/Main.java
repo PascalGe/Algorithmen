@@ -1,4 +1,5 @@
 package paper3;
+
 public class Main {
 	// TODO: Set this to 'true', if you test your code and to 'false', if you want
 	// the running time.
@@ -127,13 +128,47 @@ public class Main {
 	 */
 	public static void heapSort(int[] array) {
 
-		// TODO: Implement heapsort here
+		// heapsort here
+		// build heap (back to front)
+		for (int i = array.length / 2; i >= 0; i--) {
+			heapify(array, i, array.length - 1);
+		}
+
+		for (int i = array.length - 1; i > 0; i--) {
+
+			// extract elements
+			swapElements(array, 0, i);
+
+			// restore heap property
+			heapify(array, 0, i - 1);
+
+		}
 	}
 
-	// TODO: Put additional methods for heapsort here
-//	private static void insertHeap(int a, Heap H) {
-//		
-//	}
+	// additional methods for heapsort here
+	private static void heapify(int[] array, int parent, int lastChildInHeap) {
+		int firstChild = 2 * parent + 1;
+		int secondChild = firstChild + 1;
+
+		if (secondChild <= lastChildInHeap) {
+			int greaterElement = (array[firstChild] > array[secondChild]) ? firstChild : secondChild;
+
+			if (array[greaterElement] > array[parent]) {
+				swapElements(array, parent, greaterElement);
+				heapify(array, greaterElement, lastChildInHeap);
+			}
+		} else if (firstChild <= lastChildInHeap) {
+			if (array[firstChild] > array[parent]) {
+				swapElements(array, firstChild, parent);
+			}
+		}
+	}
+
+	private static void swapElements(int[] array, int firstIndex, int secondIndex) {
+		int temp = array[firstIndex];
+		array[firstIndex] = array[secondIndex];
+		array[secondIndex] = temp;
+	}
 
 	/* END OF HEAPSORT */
 
@@ -146,14 +181,14 @@ public class Main {
 	 */
 	public static void quickSort(int[] array) {
 
-		// TODO: Implement quicksort here
+		// quicksort here
 		if (array.length <= 1) {
 			return;
 		}
 		quickSort(array, 0, array.length - 1);
 	}
 
-	// TODO: Put additional methods for quicksort here
+	// additional methods for quicksort here
 	private static void quickSort(int[] array, int minIndex, int maxIndex) {
 		// return, if only one element is to sort
 		if (minIndex >= maxIndex) {
@@ -204,7 +239,7 @@ public class Main {
 	 */
 	public static void countingSort(int[] array) {
 
-		// TODO: Implement countingsort here
+		// countingsort here
 		if (array.length < 2) {
 			return;
 		}
@@ -218,7 +253,7 @@ public class Main {
 		countingSort(array, max);
 	}
 
-	// TODO: Put additional methods for countingsort here
+	// additional methods for countingsort here
 	private static void countingSort(int[] array, int max) {
 
 		int[] C = new int[max + 1];
@@ -235,7 +270,6 @@ public class Main {
 			C[i] += C[i - 1];
 		}
 		// Here: C[i] = last index where i is to place
-		// TODO bis hier stimmts
 
 		int[] R = new int[array.length];
 
