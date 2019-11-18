@@ -24,10 +24,34 @@ public class BSTree {
 	 * @param value the value to be inserted.
 	 */
 	public void insert(int value) {
-		// TODO: Implement the algorithm here.
-	}
+		if (this.root == null) {
+			return;
+		}
 
-	// TODO: Implement additional methods here (if needed).
+		TreeNode current = this.root;
+
+		while ((value > current.getValue() && current.getRightChild() != null)
+				|| (value <= current.getValue() && current.getLeftChild() != null)) {
+			//
+			if (value > current.getValue()) {
+				// insert right
+				current = current.getRightChild();
+			} else {
+				// insert left
+				current = current.getLeftChild();
+			}
+		}
+
+		if (value > current.getValue()) {
+			// insert right
+			current.setRightChild(new BSTreeNode(value));
+			current.getRightChild().setParentNode(current);
+		} else {
+			// insert left
+			current.setLeftChild(new BSTreeNode(value));
+			current.getLeftChild().setParentNode(current);
+		}
+	}
 
 	/**
 	 * Determines whether or not a given value is within the binary search tree. (2
@@ -37,11 +61,18 @@ public class BSTree {
 	 * @return the tree node containing the search value, if any, or null otherwise.
 	 */
 	public TreeNode search(int value) {
-		// TODO: Implement the algorithm here.
-		return null;
+		TreeNode current = this.root;
+		while (current != null && current.getValue() != value) {
+			if (value > current.getValue()) {
+				// search right
+				current = current.getRightChild();
+			} else {
+				// search left
+				current.getLeftChild();
+			}
+		}
+		return current;
 	}
-
-	// TODO: Implement additional methods here (if needed).
 
 	/**
 	 * Returns the tree node containing the maximum element, or null if this tree is
@@ -50,11 +81,20 @@ public class BSTree {
 	 * @return the tree node containing the maximum
 	 */
 	public TreeNode maximum() {
-		// TODO: Implement the algorithm here.
-		return null;
+		if (this.root == null) {
+			return null;
+		}
+		return getMaximum(root);
 	}
 
-	// TODO: Implement additional methods here (if needed).
+	// additional methods here (if needed).
+	private TreeNode getMaximum(TreeNode root) {
+		TreeNode current = root;
+		while (current.getRightChild() != null) {
+			current = current.getRightChild();
+		}
+		return current;
+	}
 
 	/**
 	 * Returns the tree node containing the minimum element, or null if this tree is
@@ -63,11 +103,16 @@ public class BSTree {
 	 * @return the tree node containing the minimum
 	 */
 	public TreeNode minimum() {
-		// TODO: Implement the algorithm here.
-		return null;
-	}
+		if (this.root == null) {
+			return null;
+		}
 
-	// TODO: Implement additional methods here (if needed).
+		TreeNode current = this.root;
+		while (current.getLeftChild() != null) {
+			current = current.getLeftChild();
+		}
+		return current;
+	}
 
 	/**
 	 * Deletes and returns a values from the binary search tree. (5 Punkte)
@@ -75,11 +120,54 @@ public class BSTree {
 	 * @return the value to be returned.
 	 */
 	public TreeNode delete(int value) {
-		// TODO: Implement the algorithm here.
-		return null;
+		TreeNode node = search(value);
+		if (node == null) {
+			return null;
+		}
+		TreeNode parent = node.getParent();
+
+		switch (getNumberOfChilds(node)) {
+		case 0:
+			if (this == parent.getLeftChild()) {
+				parent.setLeftChild(null);
+			} else {
+				parent.setRightChild(null);
+			}
+			break;
+		case 1:
+			if (this == parent.getLeftChild()) {
+				parent.setLeftChild(node.getLeftChild() == null ? node.getRightChild() : node.getLeftChild());
+			} else {
+				parent.setRightChild(node.getLeftChild() == null ? node.getRightChild() : node.getLeftChild());
+			}
+			break;
+		case 2:
+			TreeNode v = getMaximum(node.getLeftChild());
+			// delete v in tree
+			v.getParent().setRightChild(null);
+			// set v in tree
+			v.setLeftChild(node.getLeftChild());
+			if (node.getParent().getRightChild() == node) {
+				node.getParent().setRightChild(v);
+			} else {
+				node.getParent().setLeftChild(v);
+			}
+			break;
+		}
+		return node;
 	}
 
-	// TODO: Implement additional methods here (if needed).
+	// additional methods here (if needed).
+	private int getNumberOfChilds(TreeNode node) {
+		int number = 0;
+		if (node.getLeftChild() != null) {
+			number++;
+		}
+		if (node.getRightChild() != null) {
+			number++;
+		}
+		return number;
+	}
 
 	/**
 	 * Prints the elements of this binary search tree in an inorder traversal.

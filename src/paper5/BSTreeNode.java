@@ -2,57 +2,51 @@ package paper5;
 
 public class BSTreeNode implements TreeNode {
 
-	// TODO: put class variables here
+	// class variables
+	private int value;
+	private TreeNode parent, leftChild, rightChild;
 
 	public BSTreeNode(int value) {
-		// TODO: Implement me
+		this.value = value;
 	}
 
 	@Override
 	public int getValue() {
-		// TODO Auto-generated method stub
-		return 0;
+		return value;
 	}
 
 	@Override
 	public TreeNode getLeftChild() {
-		// TODO Auto-generated method stub
-		return null;
+		return leftChild;
 	}
 
 	@Override
 	public TreeNode getRightChild() {
-		// TODO Auto-generated method stub
-		return null;
+		return rightChild;
 	}
 
 	@Override
 	public TreeNode getParent() {
-		// TODO Auto-generated method stub
-		return null;
+		return parent;
 	}
 
 	@Override
 	public void setValue(int value) {
-		// TODO Auto-generated method stub
-
+		this.value = value;
 	}
 
 	@Override
 	public void setLeftChild(TreeNode v) {
-		// TODO Auto-generated method stub
-
+		this.leftChild = v;
 	}
 
 	@Override
 	public void setRightChild(TreeNode v) {
-		// TODO Auto-generated method stub
-
+		this.rightChild = v;
 	}
 
 	@Override
 	public void setParentNode(TreeNode v) {
-		// TODO Auto-generated method stub
-
+		this.parent = v;
 	}
 }
