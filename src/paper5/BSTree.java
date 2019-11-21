@@ -25,6 +25,7 @@ public class BSTree {
 	 */
 	public void insert(int value) {
 		if (this.root == null) {
+			this.root = new BSTreeNode(value);
 			return;
 		}
 
@@ -32,7 +33,7 @@ public class BSTree {
 
 		while ((value > current.getValue() && current.getRightChild() != null)
 				|| (value <= current.getValue() && current.getLeftChild() != null)) {
-			//
+			// current not a leaf
 			if (value > current.getValue()) {
 				// insert right
 				current = current.getRightChild();
@@ -41,7 +42,7 @@ public class BSTree {
 				current = current.getLeftChild();
 			}
 		}
-
+		// current a leaf
 		if (value > current.getValue()) {
 			// insert right
 			current.setRightChild(new BSTreeNode(value));
@@ -68,7 +69,7 @@ public class BSTree {
 				current = current.getRightChild();
 			} else {
 				// search left
-				current.getLeftChild();
+				current = current.getLeftChild();
 			}
 		}
 		return current;
@@ -89,11 +90,10 @@ public class BSTree {
 
 	// additional methods here (if needed).
 	private TreeNode getMaximum(TreeNode root) {
-		TreeNode current = root;
-		while (current.getRightChild() != null) {
-			current = current.getRightChild();
+		if (root.getRightChild() == null) {
+			return root;
 		}
-		return current;
+		return getMaximum(root.getRightChild());
 	}
 
 	/**
@@ -128,17 +128,22 @@ public class BSTree {
 
 		switch (getNumberOfChilds(node)) {
 		case 0:
-			if (this == parent.getLeftChild()) {
+			if (parent == null) {
+				root = null;
+			} else if (node == parent.getLeftChild()) {
 				parent.setLeftChild(null);
 			} else {
 				parent.setRightChild(null);
 			}
 			break;
 		case 1:
-			if (this == parent.getLeftChild()) {
-				parent.setLeftChild(node.getLeftChild() == null ? node.getRightChild() : node.getLeftChild());
+			TreeNode child = node.getLeftChild() == null ? node.getRightChild() : node.getLeftChild();
+			if (parent == null) {
+				root = child;
+			} else if (node == parent.getLeftChild()) {
+				parent.setLeftChild(child);
 			} else {
-				parent.setRightChild(node.getLeftChild() == null ? node.getRightChild() : node.getLeftChild());
+				parent.setRightChild(child);
 			}
 			break;
 		case 2:
@@ -147,10 +152,13 @@ public class BSTree {
 			v.getParent().setRightChild(null);
 			// set v in tree
 			v.setLeftChild(node.getLeftChild());
-			if (node.getParent().getRightChild() == node) {
-				node.getParent().setRightChild(v);
+
+			if (parent == null) {
+				root = v;
+			} else if (parent.getRightChild() == node) {
+				parent.setRightChild(v);
 			} else {
-				node.getParent().setLeftChild(v);
+				parent.setLeftChild(v);
 			}
 			break;
 		}
