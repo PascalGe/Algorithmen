@@ -99,10 +99,4 @@ public class Square {
 		default: return "something nasty happend...";
 		}
 	}
-
-
-
-
-
-
 }
