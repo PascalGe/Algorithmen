@@ -70,11 +70,11 @@ public class Board {
 		// get current square
 		Square square = board.get(position);
 		// hash out old content
-		hash ^= square.getContent();
+		hash ^= square.getHash();
 		// set new content
 		square.setContent(newState);
 		// hash in new content
-		hash ^= square.getContent();
+		hash ^= square.getHash();
 		return hash;
 	}
 
