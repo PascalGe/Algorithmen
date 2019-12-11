@@ -49,10 +49,7 @@ public class Board {
 		// TODO: IMPLEMENT ME
 		int hash = 0;
 		for (int i = 0; i < board.size(); i++) {
-			System.out.println(i);
-			if (board.get(i).getContent() != Square.EMPTY) {
-				hash = hash ^ board.get(i).getHash();
-			}
+			hash = hash ^ board.get(i).getHash();
 		}
 		return hash;
 	}
