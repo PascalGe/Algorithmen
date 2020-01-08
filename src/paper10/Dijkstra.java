@@ -8,24 +8,29 @@ public class Dijkstra {
 		start.setDistance(0);
 		boolean[] visited = new boolean[g.nodeCount()];
 
-		// dijkstra
+		// Dijkstra
 		for (int c = 0; c < g.nodeCount(); c++) {
-			// find cheepest node
-			Node current = g.nodes().get(0);
-			int currentId = 0;
-			for (int i = 1; i < visited.length; i++) {
+			// find cheapest node
+			Node current = null;
+			int currentId = -1;
+			for (int i = 0; i < visited.length; i++) {
 				if (visited[i] == false && g.nodes().get(i).getDistance() >= 0
-						&& g.nodes().get(i).getDistance() < current.getDistance()) {
+						&& (current == null || g.nodes().get(i).getDistance() < current.getDistance())) {
 					current = g.nodes().get(i);
 					currentId = i;
 				}
 			}
-			// visit cheepest
+			// visit cheapest
 			visited[currentId] = true;
 			// update rest
 			for (int i = 0; i < g.edgeCount(); i++) {
-				if (g.edges().get(i).getSource() == current) {
-					g.edges().get(i).getTarget().setDistance(current.getDistance() + g.edges().get(i).getCost());
+				Edge edge = g.edges().get(i);
+				Node source = edge.getSource();
+				Node target = edge.getTarget();
+
+				if (source == current && (target.getDistance() < 0 || target.getDistance() > source.getDistance() + edge.getCost())) {
+					target.setDistance(current.getDistance() + edge.getCost());
+					target.setPredecessor(source);
 				}
 			}
 		}
@@ -35,14 +40,14 @@ public class Dijkstra {
 		// This is the graph from Exercise 4 of PÜ 9.
 		Graph g = new Graph();
 
-		Node s = g.createNode();
-		Node a = g.createNode();
-		Node b = g.createNode();
-		Node c = g.createNode();
-		Node d = g.createNode();
-		Node e = g.createNode();
-		Node f = g.createNode();
-		Node t = g.createNode();
+		Node s = g.createNode(); // 0
+		Node a = g.createNode(); // 1
+		Node b = g.createNode(); // 2
+		Node c = g.createNode(); // 3
+		Node d = g.createNode(); // 4
+		Node e = g.createNode(); // 5
+		Node f = g.createNode(); // 6
+		Node t = g.createNode(); // 7
 
 		g.createEdge(s, a, 4);
 		g.createEdge(s, b, 6);
@@ -56,6 +61,29 @@ public class Dijkstra {
 		g.createEdge(f, e, 3);
 		g.createEdge(e, t, 5);
 		g.createEdge(f, t, 9);
+
+//		Node a = g.createNode();
+//		Node b = g.createNode();
+//		Node c = g.createNode();
+//		Node d = g.createNode();
+//		Node e = g.createNode();
+//
+//		g.createEdge(a, c, 2);
+//		g.createEdge(a, e, 4);
+//		g.createEdge(b, c, 1);
+//		g.createEdge(b, d, 3);
+//		g.createEdge(b, e, 6);
+//		g.createEdge(c, a, 2);
+//		g.createEdge(c, b, 1);
+//		g.createEdge(c, d, 3);
+//		g.createEdge(d, b, 3);
+//		g.createEdge(d, c, 3);
+//		g.createEdge(d, e, 2);
+//		g.createEdge(e, b, 6);
+//		g.createEdge(e, d, 2);
+//		g.createEdge(e, a, 4);
+//
+//		runDijkstra(g, a);
 
 		runDijkstra(g, s);
 		g.nodes().stream().forEach(u -> {
