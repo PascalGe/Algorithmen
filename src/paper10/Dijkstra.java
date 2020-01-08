@@ -3,7 +3,6 @@ package paper10;
 public class Dijkstra {
 
 	public static void runDijkstra(Graph g, Node start) {
-		// TODO: Add your implementation here.
 		// init
 		start.setDistance(0);
 		boolean[] visited = new boolean[g.nodeCount()];
@@ -28,7 +27,8 @@ public class Dijkstra {
 				Node source = edge.getSource();
 				Node target = edge.getTarget();
 
-				if (source == current && (target.getDistance() < 0 || target.getDistance() > source.getDistance() + edge.getCost())) {
+				if (source == current
+						&& (target.getDistance() < 0 || target.getDistance() > source.getDistance() + edge.getCost())) {
 					target.setDistance(current.getDistance() + edge.getCost());
 					target.setPredecessor(source);
 				}
@@ -61,29 +61,6 @@ public class Dijkstra {
 		g.createEdge(f, e, 3);
 		g.createEdge(e, t, 5);
 		g.createEdge(f, t, 9);
-
-//		Node a = g.createNode();
-//		Node b = g.createNode();
-//		Node c = g.createNode();
-//		Node d = g.createNode();
-//		Node e = g.createNode();
-//
-//		g.createEdge(a, c, 2);
-//		g.createEdge(a, e, 4);
-//		g.createEdge(b, c, 1);
-//		g.createEdge(b, d, 3);
-//		g.createEdge(b, e, 6);
-//		g.createEdge(c, a, 2);
-//		g.createEdge(c, b, 1);
-//		g.createEdge(c, d, 3);
-//		g.createEdge(d, b, 3);
-//		g.createEdge(d, c, 3);
-//		g.createEdge(d, e, 2);
-//		g.createEdge(e, b, 6);
-//		g.createEdge(e, d, 2);
-//		g.createEdge(e, a, 4);
-//
-//		runDijkstra(g, a);
 
 		runDijkstra(g, s);
 		g.nodes().stream().forEach(u -> {
